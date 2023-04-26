@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="RunRequestWorkflowEngineParameters")
+T = TypeVar("T", bound="AWSBatchConfigurationForgedResourcesItem")
 
 
 @attr.s(auto_attribs=True)
-class RunRequestWorkflowEngineParameters:
+class AWSBatchConfigurationForgedResourcesItem:
     """ """
 
-    additional_properties: Dict[str, str] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,19 +22,19 @@ class RunRequestWorkflowEngineParameters:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        run_request_workflow_engine_parameters = cls()
+        aws_batch_configuration_forged_resources_item = cls()
 
-        run_request_workflow_engine_parameters.additional_properties = d
-        return run_request_workflow_engine_parameters
+        aws_batch_configuration_forged_resources_item.additional_properties = d
+        return aws_batch_configuration_forged_resources_item
 
     @property
     def additional_keys(self) -> List[str]:
         return list(self.additional_properties.keys())
 
-    def __getitem__(self, key: str) -> str:
+    def __getitem__(self, key: str) -> Any:
         return self.additional_properties[key]
 
-    def __setitem__(self, key: str, value: str) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         self.additional_properties[key] = value
 
     def __delitem__(self, key: str) -> None:
