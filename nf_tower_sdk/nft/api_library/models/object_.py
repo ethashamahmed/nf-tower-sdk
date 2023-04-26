@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="DescribeWorkflowResponse")
+T = TypeVar("T", bound="Object")
 
 
 @attr.s(auto_attribs=True)
-class DescribeWorkflowResponse:
+class Object:
     """ """
 
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,10 +22,10 @@ class DescribeWorkflowResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        describe_workflow_response = cls()
+        object_ = cls()
 
-        describe_workflow_response.additional_properties = d
-        return describe_workflow_response
+        object_.additional_properties = d
+        return object_
 
     @property
     def additional_keys(self) -> List[str]:

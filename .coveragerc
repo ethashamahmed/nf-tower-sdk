@@ -1,0 +1,16 @@
+[run]
+source = nf_tower_sdk
+omit =
+    */nft/*
+branch = True
+parallel = True
+
+[report]
+omit =
+    */nft/*
+fail_under = 90
+precision = 2
+skip_empty = True
+
+[xml]
+output = coverage.xml

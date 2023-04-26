@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="IteratorString")
+T = TypeVar("T", bound="WorkflowParams")
 
 
 @attr.s(auto_attribs=True)
-class IteratorString:
+class WorkflowParams:
     """ """
 
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,10 +22,10 @@ class IteratorString:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        iterator_string = cls()
+        workflow_params = cls()
 
-        iterator_string.additional_properties = d
-        return iterator_string
+        workflow_params.additional_properties = d
+        return workflow_params
 
     @property
     def additional_keys(self) -> List[str]:

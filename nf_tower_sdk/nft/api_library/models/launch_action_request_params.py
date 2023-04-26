@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="EmptyBodyRequest")
+T = TypeVar("T", bound="LaunchActionRequestParams")
 
 
 @attr.s(auto_attribs=True)
-class EmptyBodyRequest:
+class LaunchActionRequestParams:
     """ """
 
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,10 +22,10 @@ class EmptyBodyRequest:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        empty_body_request = cls()
+        launch_action_request_params = cls()
 
-        empty_body_request.additional_properties = d
-        return empty_body_request
+        launch_action_request_params.additional_properties = d
+        return launch_action_request_params
 
     @property
     def additional_keys(self) -> List[str]:

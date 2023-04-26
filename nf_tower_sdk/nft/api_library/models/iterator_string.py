@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="LaunchActionRequestParams")
+T = TypeVar("T", bound="IteratorString")
 
 
 @attr.s(auto_attribs=True)
-class LaunchActionRequestParams:
+class IteratorString:
     """ """
 
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,10 +22,10 @@ class LaunchActionRequestParams:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        launch_action_request_params = cls()
+        iterator_string = cls()
 
-        launch_action_request_params.additional_properties = d
-        return launch_action_request_params
+        iterator_string.additional_properties = d
+        return iterator_string
 
     @property
     def additional_keys(self) -> List[str]:

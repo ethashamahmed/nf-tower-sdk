@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="AWSBatchConfigurationForgedResourcesItem")
+T = TypeVar("T", bound="GoogleLifeSciencesConfigurationLabels")
 
 
 @attr.s(auto_attribs=True)
-class AWSBatchConfigurationForgedResourcesItem:
+class GoogleLifeSciencesConfigurationLabels:
     """ """
 
-    additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
+    additional_properties: Dict[str, str] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,19 +22,19 @@ class AWSBatchConfigurationForgedResourcesItem:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        aws_batch_configuration_forged_resources_item = cls()
+        google_life_sciences_configuration_labels = cls()
 
-        aws_batch_configuration_forged_resources_item.additional_properties = d
-        return aws_batch_configuration_forged_resources_item
+        google_life_sciences_configuration_labels.additional_properties = d
+        return google_life_sciences_configuration_labels
 
     @property
     def additional_keys(self) -> List[str]:
         return list(self.additional_properties.keys())
 
-    def __getitem__(self, key: str) -> Any:
+    def __getitem__(self, key: str) -> str:
         return self.additional_properties[key]
 
-    def __setitem__(self, key: str, value: Any) -> None:
+    def __setitem__(self, key: str, value: str) -> None:
         self.additional_properties[key] = value
 
     def __delitem__(self, key: str) -> None:

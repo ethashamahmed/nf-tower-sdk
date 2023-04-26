@@ -2,16 +2,17 @@ from typing import Any, Dict, List, Type, TypeVar
 
 import attr
 
-T = TypeVar("T", bound="Object")
+T = TypeVar("T", bound="WorkflowDbDtoParams")
 
 
 @attr.s(auto_attribs=True)
-class Object:
+class WorkflowDbDtoParams:
     """ """
 
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -21,10 +22,10 @@ class Object:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        object_ = cls()
+        workflow_db_dto_params = cls()
 
-        object_.additional_properties = d
-        return object_
+        workflow_db_dto_params.additional_properties = d
+        return workflow_db_dto_params
 
     @property
     def additional_keys(self) -> List[str]:
