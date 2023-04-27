@@ -1,22 +1,33 @@
+exclude: '^nf_tower_sdk/nft/'
 repos:
-    -   repo: https://github.com/pre-commit/pre-commit-hooks
-        rev: v4.3.0
-        hooks:
-        -   id: end-of-file-fixer
-            exclude: ^nf_tower_sdk/nft/
-        -   id: trailing-whitespace
-            exclude: ^nf_tower_sdk/nft/
-    -   repo: https://github.com/psf/black
-        rev: 22.6.0
-        hooks:
-        -   id: black
-            exclude: ^nf_tower_sdk/nft/
-    -   repo: local
-        hooks:
-        -   id: pylint
-            name: pylint
-            entry: pylint
-            language: system
-            types: [python]
-            require_serial: true
-            exclude: ^nf_tower_sdk/nft/
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: debug-statements
+    -   id: requirements-txt-fixer
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: Python - import sorter
+-   repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+    -   id: black
+        name: Python - formatter
+-   repo: https://github.com/PyCQA/pylint
+    rev: v2.17.3
+    hooks:
+    -   id: pylint
+        name: Python - extensive semantic linting
+        args: [-rn, -fparseable]
+        language: system
+        types: [python]
+-   repo: https://github.com/PyCQA/bandit
+    rev: '1.7.5'
+    hooks:
+    -   id: bandit
+        name: Python - security scanner

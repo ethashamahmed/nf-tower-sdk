@@ -12,11 +12,11 @@ REQUIREMENTS_FILE				?= requirements.txt
 SOURCE_CODE_DIR					?= nf_tower_sdk
 
 .PHONY: init
-init: venv ## Setup development environment.
+init: clean requirements nf-tower-sdk ## Install project dependencies.
 	pre-commit install
 
 .PHONY: venv
-venv: ## Creates python virtual env with dependencies.
+venv: ## Creates python virtual env with project dependencies.
 	python$(PY_VERSION) -m venv $(PY_VENV)
 	source $(PY_VENV)/bin/activate && \
 	python -m pip install --upgrade pip -i $(PYPI_INDEX) && \
@@ -24,9 +24,14 @@ venv: ## Creates python virtual env with dependencies.
 	pip install .
 
 .PHONY: requirements
-requirements: ## Install python dependencies.
+requirements: clean ## Install all python dependencies.
 	python -m pip install --upgrade pip -i $(PYPI_INDEX)
 	pip install -r $(REQUIREMENTS_FILE) -i $(PYPI_INDEX)
+
+.PHONY: nf-tower-sdk
+nf-tower-sdk: clean ## Install project as python package.
+	python -m pip install --upgrade pip -i $(PYPI_INDEX)
+	pip install .
 
 .PHONY: nft-api-library
 nft-api-library: ## Generates Nextflow Tower API library using openapi-python-client.
@@ -46,6 +51,6 @@ clean: ## Cleanup build and test objects.
 	python -Bc "import pathlib; import shutil; [shutil.rmtree(p) for p in pathlib.Path('.').rglob('__pycache__')]"
 
 .PHONY: test
-test: clean ## Run unit tests with pytest.
+test: clean nf-tower-sdk ## Install dependencies and run unit tests with pytest.
 	pip install .[test]
 	pytest
