@@ -14,4 +14,16 @@ Python SDK for [Nextflow Tower API](https://help.tower.nf/22.3/api/overview/#pro
 
 ## Project status
 
-Alpha version for this project is under active developement
+Alpha version for this project is under active development.
+
+## Setting up local environment
+
+Use [Makefile](./Makefile) to setup local development environment.
+Unit tests currently use Seqera's [NF Tower community](https://tower.nf)
+installation instead of mocking the API. This is to enable
+verification of the API calls
+through an actual Tower API during initial development.
+So running tests locally requires this environment variable:
+`NFT_API_TOKEN=<your_api_token_for_nextflow_tower>`.
+See [NF Tower docs](https://help.tower.nf/22.4/api/overview/#authentication)
+for how to create your API token.
