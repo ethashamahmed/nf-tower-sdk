@@ -31,3 +31,4 @@ repos:
     hooks:
     -   id: bandit
         name: Python - security scanner
+        exclude: '^tests/'
