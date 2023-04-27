@@ -1,5 +1,6 @@
 # nf-tower-sdk
 
+[![Test](https://github.com/ethashamahmed/nf-tower-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/ethashamahmed/nf-tower-sdk/actions/workflows/test.yml)
 [![PythonSupport](https://img.shields.io/static/v1?label=python&message=%203.9&color=blue?style=flat-square&logo=python)](https://www.python.org/downloads/release/python-390/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Code linter: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
