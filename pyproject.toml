@@ -25,20 +25,17 @@ classifiers = [
 ]
 
 dependencies = [
-  "attrs==21.3.0",
-  "httpx==0.24.0",
-  "jsonschema==4.16.0"
+  "jsonschema>=4.16.0",
+  "openapi-python-client>=0.13.4"
 ]
 
 # dynamic = ["version", "description"]
 
 [project.optional-dependencies]
 test = [
-  "pylint==2.16.2",
-  "pylint-exit==1.2.0",
-  "pytest==7.2.0",
-  "pytest-cov==4.0.0",
-  "pytest-xdist==3.2.1"
+  "pytest>=7.2.0",
+  "pytest-cov>=4.0.0",
+  "pytest-xdist>=3.2.1"
 ]
 
 [build-system]
@@ -52,3 +49,8 @@ extend-exclude = '''
   .*/nft/*
 )
 '''
+
+[tool.isort]
+line_length = 72
+multi_line_output = 3
+include_trailing_comma = true

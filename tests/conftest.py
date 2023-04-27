@@ -2,6 +2,7 @@
 Module contains test config.
 """
 import os
+
 import pytest
 
 from nf_tower_sdk.tower import NextflowTowerClient

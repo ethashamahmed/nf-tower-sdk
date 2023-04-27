@@ -1,9 +1,11 @@
 # nf-tower-sdk
 
 [![Test](https://github.com/ethashamahmed/nf-tower-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/ethashamahmed/nf-tower-sdk/actions/workflows/test.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pre-commit/action/main.svg)](https://github.com/ethashamahmed/nf-tower-sdk/actions/workflows/pre-commit.yml)
 [![PythonSupport](https://img.shields.io/static/v1?label=python&message=%203.9&color=blue?style=flat-square&logo=python)](https://www.python.org/downloads/release/python-390/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Code linter: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
+[![security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
 
 Python SDK for [Nextflow Tower API](https://help.tower.nf/22.3/api/overview/#programmatic-api). The purpose of this SDK is to provide programmatic access to Tower API endpoints.
 
