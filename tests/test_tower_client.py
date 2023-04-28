@@ -1,6 +1,5 @@
-"""
-Module contains unit tests for NextflowTowerClient.
-"""
+"""Unit tests for NextflowTowerClient."""
+
 from nf_tower_sdk.tower import (
     Launch,
     NextflowTowerClient,
@@ -30,7 +29,9 @@ def test_client_can_validate_pipeline_params(
     """
     assert (
         test_client.is_valid_pipeline_params(
-            test_workflow["id"], test_workflow["params"]
+            test_workflow["workspace_id"],
+            test_workflow["id"],
+            test_workflow["params"],
         )
         is True
     )
@@ -61,7 +62,9 @@ def test_client_can_get_pipeline_id(
     """
     Tests if client can get Tower ID for pipeline based on name.
     """
-    pipeline_id = test_client.get_pipeline_id(test_workflow["name"])
+    pipeline_id = test_client.get_pipeline_id(
+        test_workflow["workspace_id"], test_workflow["name"]
+    )
     assert isinstance(pipeline_id, int) is True
 
 
@@ -71,7 +74,9 @@ def test_client_can_get_pipeline_launch(
     """
     Tests if client can get launch configuration for pipelines.
     """
-    launch = test_client.get_pipeline_launch(test_workflow["id"])
+    launch = test_client.get_pipeline_launch(
+        test_workflow["workspace_id"], test_workflow["id"]
+    )
     assert isinstance(launch, Launch) is True
 
 
@@ -81,7 +86,9 @@ def test_client_can_get_pipeline_params_schema(
     """
     Tests if client can get the schema of params for pipelines.
     """
-    schema = test_client.get_pipeline_params_schema(test_workflow["id"])
+    schema = test_client.get_pipeline_params_schema(
+        test_workflow["workspace_id"], test_workflow["id"]
+    )
     assert isinstance(schema, str) is True
 
 
@@ -111,6 +118,8 @@ def test_client_can_launch_workflows(
     """
     Tests if client can launch workflows in Nextflow Tower.
     """
-    launch = test_client.get_pipeline_launch(test_workflow["id"])
+    launch = test_client.get_pipeline_launch(
+        test_workflow["workspace_id"], test_workflow["id"]
+    )
     workflow_id = test_client.launch_workflow(launch)
     assert isinstance(workflow_id, str) is True

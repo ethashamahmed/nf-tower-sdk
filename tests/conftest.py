@@ -1,6 +1,5 @@
-"""
-Module contains test config.
-"""
+"""Unit test config."""
+
 import os
 
 import pytest
@@ -10,9 +9,7 @@ from nf_tower_sdk.tower import NextflowTowerClient
 
 @pytest.fixture
 def test_client() -> NextflowTowerClient:
-    """
-    Generic TestData to use as event bus event or workflow queue message.
-    """
+    """Test client."""
     return NextflowTowerClient(
         url="https://tower.nf",
         org_name="community",
@@ -23,12 +20,12 @@ def test_client() -> NextflowTowerClient:
 
 @pytest.fixture
 def test_workflow() -> dict:
-    """
-    Generic TestData to use as event bus event or workflow queue message.
-    """
+    """Details of workflow to use for testing."""
     return {
         "name": "nf-core-rnaseq",
         "id": 175099328146358,
+        "org_id": 187965850823746,
+        "workspace_id": 40230138858677,
         # pylint: disable=line-too-long
         "params": {
             "help": False,
