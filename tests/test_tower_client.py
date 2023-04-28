@@ -28,7 +28,7 @@ def test_client_can_validate_pipeline_params(
     based on the schema defined for it in Tower.
     """
     assert (
-        test_client.is_valid_pipeline_params(
+        test_client.pipelines.is_valid_pipeline_params(
             test_workflow["workspace_id"],
             test_workflow["id"],
             test_workflow["params"],
@@ -62,7 +62,7 @@ def test_client_can_get_pipeline_id(
     """
     Tests if client can get Tower ID for pipeline based on name.
     """
-    pipeline_id = test_client.get_pipeline_id(
+    pipeline_id = test_client.pipelines.get_pipeline_id(
         test_workflow["workspace_id"], test_workflow["name"]
     )
     assert isinstance(pipeline_id, int) is True
@@ -74,7 +74,7 @@ def test_client_can_get_pipeline_launch(
     """
     Tests if client can get launch configuration for pipelines.
     """
-    launch = test_client.get_pipeline_launch(
+    launch = test_client.pipelines.get_pipeline_launch(
         test_workflow["workspace_id"], test_workflow["id"]
     )
     assert isinstance(launch, Launch) is True
@@ -86,7 +86,7 @@ def test_client_can_get_pipeline_params_schema(
     """
     Tests if client can get the schema of params for pipelines.
     """
-    schema = test_client.get_pipeline_params_schema(
+    schema = test_client.pipelines.get_pipeline_params_schema(
         test_workflow["workspace_id"], test_workflow["id"]
     )
     assert isinstance(schema, str) is True

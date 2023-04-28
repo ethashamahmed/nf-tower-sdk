@@ -18,8 +18,38 @@ class AuthenticatedTowerClientInterface(ABC):
     _client: AuthenticatedClient
 
 
+class ComputeEnvsClientInterface(ABC):
+    """Interface for compute environments client."""
+
+    @abstractmethod
+    def get_compute_env_id(
+        self, compute_env_name: str
+    ) -> Union[str, NextflowTowerClientError]:
+        """
+        Return compute env ID using compute env name. Exact name must be given.
+
+        :param compute_env_name: Exact name of compute environment in Tower.
+
+        :return: Compute environment ID.
+        """
+
+
+class OrgsClientInterface(ABC):
+    """Interface for organisation client."""
+
+    @abstractmethod
+    def get_org_id(
+        self, org_name: str
+    ) -> Union[int, NextflowTowerClientError]:
+        """
+        Return organisation ID based on name.
+
+        :param org_name: Name of organisation
+        """
+
+
 class PipelinesClientInterface(ABC):
-    """Interface Pipelines resources client."""
+    """Interface for Pipelines client."""
 
     @abstractmethod
     def is_valid_pipeline_params(
@@ -83,45 +113,8 @@ class PipelinesClientInterface(ABC):
         """
 
 
-class NextflowTowerClientInterface(PipelinesClientInterface, ABC):
-    """Interface for Nextflow Tower Client."""
-
-    @abstractmethod
-    def get_compute_env_id(
-        self, compute_env_name: str
-    ) -> Union[str, NextflowTowerClientError]:
-        """
-        Return compute env ID using compute env name. Exact name must be given.
-
-        :param compute_env_name: Exact name of compute environment in Tower.
-
-        :return: Compute environment ID.
-        """
-
-    @abstractmethod
-    def get_org_id(
-        self, org_name: str
-    ) -> Union[int, NextflowTowerClientError]:
-        """
-        Return organisation ID based on name.
-
-        :param org_name: Name of organisation
-        """
-
-    @abstractmethod
-    def get_workspace_id(
-        self, org_id: int, workspace_name: str
-    ) -> Union[int, NextflowTowerClientError]:
-        """
-        Return the ID in Nextflow Tower for a given workspace name.
-
-        Raise NextflowTowerClientError if no matching workspace found in Tower.
-
-        :param org_id: Organisation ID the workspace belongs to.
-        :workspace_name: Name of the workspace.
-
-        :return: Workspace ID
-        """
+class WorkflowsClientInterface(ABC):
+    """Interface for workflows client."""
 
     @abstractmethod
     def get_workflow_launch(
@@ -148,3 +141,33 @@ class NextflowTowerClientInterface(PipelinesClientInterface, ABC):
 
         :return: new workflow run ID
         """
+
+
+class WorkspacesClientInterface(ABC):
+    """Interface for workflows client."""
+
+    @abstractmethod
+    def get_workspace_id(
+        self, org_id: int, workspace_name: str
+    ) -> Union[int, NextflowTowerClientError]:
+        """
+        Return the ID in Nextflow Tower for a given workspace name.
+
+        Raise NextflowTowerClientError if no matching workspace found in Tower.
+
+        :param org_id: Organisation ID the workspace belongs to.
+        :workspace_name: Name of the workspace.
+
+        :return: Workspace ID
+        """
+
+
+class NextflowTowerClientInterface(
+    AuthenticatedTowerClientInterface, ABC
+):
+    """Interface for Nextflow Tower Client."""
+
+    compute_envs: ComputeEnvsClientInterface
+    orgs: OrgsClientInterface
+    pipelines: PipelinesClientInterface
+    workflows: WorkflowsClientInterface
