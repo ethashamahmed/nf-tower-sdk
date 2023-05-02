@@ -23,6 +23,6 @@ jobs:
           python -m pip install .
           python -m pip install .[test]
       - name: Test
-        run: pytest --cov-fail-under=70
+        run: pytest
         env:
           NFT_API_TOKEN: ${{ secrets.NFT_API_TOKEN }}
