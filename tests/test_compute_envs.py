@@ -135,13 +135,21 @@ def test_client_can_set_compute_env(
 
 def test_client_can_validate_compute_env_name(
     compute_env_client: ComputeEnvs,
-    test_compute_env: dict,
-    test_workspace: dict,
 ):
     """
     Tests if client can validate the compute env name.
     """
-    with pytest.raises(NotImplementedError):
-        compute_env_client.validate_compute_env_name(
-            test_workspace["id"], test_compute_env["name"]
-        )
+    is_valid_name = compute_env_client.validate_compute_env_name(
+        None, "hello-world"
+    )
+    assert is_valid_name is True
+
+
+def test_validate_compute_env_name_raises_error_for_bad_name(
+    compute_env_client: ComputeEnvs,
+):
+    """
+    Tests validate_compute_env_name raises error if name doesn't meet requirements.
+    """
+    with pytest.raises(NextflowTowerClientError):
+        compute_env_client.validate_compute_env_name(None, "a")

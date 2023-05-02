@@ -1,5 +1,6 @@
 """Client for performing operations on Nextflow Tower API endpoints."""
 
+from http import HTTPStatus
 from typing import Union
 
 from nf_tower_sdk.exceptions import NextflowTowerClientError
@@ -29,10 +30,19 @@ class AuthenticatedTowerClient(AuthenticatedTowerClientInterface):
 
         :param response: `Response` object from Tower API.
         """
+        if response.status_code is HTTPStatus.BAD_REQUEST:
+            raise NextflowTowerClientError(
+                response.content,
+            )
+        if response.status_code is HTTPStatus.CONFLICT:
+            raise NextflowTowerClientError(
+                response.content,
+            )
+        if response.status_code is HTTPStatus.FORBIDDEN:
+            raise NextflowTowerClientError("Operation not allowed.")
         if isinstance(response, ErrorResponse):
             raise NextflowTowerClientError(
-                response.message,
+                response.content,
             )
-        if response is None:
-            raise NextflowTowerClientError("Bad request.")
+
         return response
