@@ -23,11 +23,12 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def get_compute_env_id(
-        self, compute_env_name: str
+        self, workspace_id: int, compute_env_name: str
     ) -> Union[str, NextflowTowerClientError]:
         """
         Return compute env ID using compute env name. Exact name must be given.
 
+        :param workspace_id: ID of Workspace containing the compute env.
         :param compute_env_name: Exact name of compute environment in Tower.
 
         :return: Compute environment ID.
@@ -118,18 +119,19 @@ class WorkflowsClientInterface(ABC):
 
     @abstractmethod
     def get_workflow_launch(
-        self, workflow_id: str
+        self, workspace_id: int, workflow_id: str
     ) -> Union[WorkflowLaunchResponse, NextflowTowerClientError]:
         """
         Describe a workflow launch for the given ID.
 
+        :param workspace_id: ID of Workspace containing the workflow.
         :param workflow_id: Workflow string identifier
         :return: Workflow description
         """
 
     @abstractmethod
     def launch_workflow(
-        self, request: Launch
+        self, workspace_id: int, request: Launch
     ) -> Union[str, NextflowTowerClientError]:
         """
         Launch a new workflow and returns the workflow ID.
@@ -137,6 +139,7 @@ class WorkflowsClientInterface(ABC):
         Raise NextflowTowerClientError if Tower returns error
         when launching workflow.
 
+        :param workspace_id: ID of Workspace containing the workflow.
         :param launch_request: a WorkflowLaunchRequest object
 
         :return: new workflow run ID
@@ -162,12 +165,11 @@ class WorkspacesClientInterface(ABC):
         """
 
 
-class NextflowTowerClientInterface(
-    AuthenticatedTowerClientInterface, ABC
-):
+class NextflowTowerClientInterface(ABC):
     """Interface for Nextflow Tower Client."""
 
     compute_envs: ComputeEnvsClientInterface
     orgs: OrgsClientInterface
     pipelines: PipelinesClientInterface
     workflows: WorkflowsClientInterface
+    workspaces: WorkspacesClientInterface

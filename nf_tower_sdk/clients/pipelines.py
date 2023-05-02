@@ -21,7 +21,7 @@ from nf_tower_sdk.nft.api_library.models import (
 
 
 class Pipelines(PipelinesClientInterface, AuthenticatedTowerClient):
-    """Client for interacting with pipelines."""
+    """Client for interacting with pipelines related endpoints in Nextflow Tower API."""
 
     def is_valid_pipeline_params(
         self, workspace_id: int, pipeline_id: int, params: dict

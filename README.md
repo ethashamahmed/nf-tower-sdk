@@ -30,4 +30,12 @@ So running tests locally requires this environment variable:
 See [NF Tower docs](https://help.tower.nf/22.4/api/overview/#authentication)
 for how to create your API token.
 
+Example commands for initialising local environment and running tests:
+
+```bash
+export NFT_API_TOKEN=<your_api_token_for_nextflow_tower>
+make init
+make test
+```
+
 Use [act](https://github.com/nektos/act) to run the Github Actions locally.

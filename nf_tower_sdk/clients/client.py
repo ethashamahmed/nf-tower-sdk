@@ -10,11 +10,8 @@ class AuthenticatedTowerClient(AuthenticatedTowerClientInterface):
 
     def __init__(self, client: AuthenticatedClient):
         """
-        Client which has been authenticated for Nextflow Tower API.
+        Tower client with an `AuthenticatedClient` for making API calls.
 
-        :param url: URL for Nextflow tower. Example "https://tower.nf".
-        :param api_token: Tower API authentication token.
-        :param timeout: The maximum amount of a time in seconds a request can take.
-             API functions will raise httpx.TimeoutException if this is exceeded.
+        :param client: `AuthenticatedClient` object for Tower API.
         """
         self._client = client

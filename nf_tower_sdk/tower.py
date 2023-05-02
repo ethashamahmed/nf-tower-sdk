@@ -1,32 +1,17 @@
 """Client for Nextflow Tower API."""
 
-from typing import Union
-
-from httpx._exceptions import ReadTimeout
-
-from nf_tower_sdk.clients import Pipelines
-from nf_tower_sdk.exceptions import NextflowTowerClientError
+from nf_tower_sdk.clients import (
+    ComputeEnvs,
+    Orgs,
+    Pipelines,
+    Workflows,
+    Workspaces,
+)
 from nf_tower_sdk.interfaces import NextflowTowerClientInterface
 from nf_tower_sdk.nft.api_library import AuthenticatedClient
-from nf_tower_sdk.nft.api_library.api.default import (
-    create_workflow_launch,
-    describe_workflow_launch,
-    list_compute_envs,
-    list_organizations,
-    list_workspaces,
-)
-from nf_tower_sdk.nft.api_library.models import (
-    ErrorResponse,
-    Launch,
-    ListComputeEnvsResponse,
-    ListOrganizationsResponse,
-    ListWorkspacesResponse,
-    SubmitWorkflowLaunchRequest,
-    WorkflowLaunchResponse,
-)
 
 
-# pylint: disable=too-many-ancestors
+# pylint: disable=too-few-public-methods
 class NextflowTowerClient(NextflowTowerClientInterface):
     """
     Client for consuming Nextflow Tower API.
@@ -39,18 +24,11 @@ class NextflowTowerClient(NextflowTowerClientInterface):
     """
 
     _url: str
-    org_name: str
-    org_id: int
-    workspace_name: str
-    workspace_id: int
 
-    # pylint: disable=too-many-arguments
     def __init__(
         self,
         url: str,
         api_token: str,
-        org_name: str,
-        workspace_name: str,
         timeout: int = 20.0,
     ):
         """
@@ -62,137 +40,11 @@ class NextflowTowerClient(NextflowTowerClientInterface):
              API functions will raise httpx.TimeoutException if this is exceeded.
         """
         self._url = url
-        self._client = AuthenticatedClient(
+        client = AuthenticatedClient(
             base_url=f"{url}/api", token=api_token, timeout=timeout
         )
-        self.org_name: str = org_name
-        self.workspace_name = workspace_name
-        self.org_id = self.get_org_id(org_name)
-        self.workspace_id = self.get_workspace_id(
-            self.org_id, workspace_name
-        )
-
-        self.pipelines = Pipelines(self._client)
-
-    @property
-    def tower_workflow_run_base_url(self) -> str:
-        """Returns the base url for workflow runs in Tower."""
-        return f"{self._url}/orgs/{self.org_name}/workspaces/{self.workspace_name}/watch"
-
-    def get_compute_env_id(
-        self, compute_env_name: str
-    ) -> Union[str, NextflowTowerClientError]:
-        """
-        Return compute env ID using compute env name. Exact name must be given.
-
-        :param compute_env_name: Exact name of compute environment in Tower.
-
-        :return: Compute environment ID.
-        """
-        compute_envs = list_compute_envs.sync(
-            client=self._client,
-            workspace_id=self.workspace_id,
-            status="AVAILABLE",
-        )
-        if isinstance(compute_envs, ListComputeEnvsResponse):
-            for compute_env in compute_envs.compute_envs:
-                if compute_env.name.lower() == compute_env_name.lower():
-                    return str(compute_env.id)
-
-        raise NextflowTowerClientError(
-            f"Failed to find compute env: {compute_env_name}. Response from tower: {compute_envs}"
-        )
-
-    def get_org_id(
-        self, org_name: str
-    ) -> Union[int, NextflowTowerClientError]:
-        """
-        Return organisation ID based on name.
-
-        :param org_name: Name of organisation
-        """
-        list_org_response = list_organizations.sync(client=self._client)
-        if isinstance(list_org_response, ListOrganizationsResponse):
-            for org in list_org_response.organizations:
-                if org.name.lower() == org_name.lower():
-                    return org.org_id
-        raise NextflowTowerClientError(
-            f"Tower organisation {org_name} doesn't exist."
-        )
-
-    def get_workspace_id(
-        self, org_id: int, workspace_name: str
-    ) -> Union[int, NextflowTowerClientError]:
-        """
-        Return the ID in Nextflow Tower for a given workspace name.
-
-        Raise NextflowTowerClientError if no matching workspace found in Tower.
-
-        :param org_id: Organisation ID the workspace belongs to.
-        :workspace_name: Name of the workspace.
-
-        :return: Workspace ID
-        """
-        workspaces_response = list_workspaces.sync(
-            client=self._client, org_id=org_id
-        )
-        if isinstance(workspaces_response, ListWorkspacesResponse):
-            for workspace in workspaces_response.workspaces:
-                if workspace.name == workspace_name:
-                    return workspace.id
-        raise NextflowTowerClientError(
-            f"Tower Workspace {workspace_name} doesn't exist."
-        )
-
-    def get_workflow_launch(
-        self, workflow_id: str
-    ) -> Union[WorkflowLaunchResponse, NextflowTowerClientError]:
-        """
-        Describe a workflow launch for the given ID.
-
-        :param workflow_id: Workflow string identifier
-        :return: Workflow description
-        """
-        workflow = describe_workflow_launch.sync(
-            client=self._client,
-            workspace_id=self.workspace_id,
-            workflow_id=workflow_id,
-        )
-        if isinstance(workflow, (ErrorResponse, type(None))):
-            raise NextflowTowerClientError(
-                f"Failed to find a workflow launch in Tower for workflow_id: {workflow_id}. "
-                f"Response from tower: {workflow}"
-            )
-        return workflow.launch
-
-    def launch_workflow(
-        self, request: Launch
-    ) -> Union[str, NextflowTowerClientError]:
-        """
-        Launch a new workflow and returns the workflow ID.
-
-        Raise NextflowTowerClientError if Tower returns error
-        when launching workflow.
-
-        :param launch_request: a WorkflowLaunchRequest object
-
-        :return: new workflow run ID
-        """
-        try:
-            submit_workflow_response = create_workflow_launch.sync(
-                client=self._client,
-                workspace_id=self.workspace_id,
-                json_body=SubmitWorkflowLaunchRequest(launch=request),
-            )
-        except ReadTimeout as err:
-            raise NextflowTowerClientError(
-                f"Tower API call timeout when launching pipeline: {request.pipeline}. "
-                f"NOTE: Workflow might have launched before read timeout."
-            ) from err
-
-        if isinstance(submit_workflow_response, ErrorResponse):
-            raise NextflowTowerClientError(
-                f"Failed to launch pipeline: {request.pipeline}, "
-                f"error: {submit_workflow_response}"
-            )
-        return submit_workflow_response.workflow_id
+        self.compute_envs = ComputeEnvs(client)
+        self.orgs = Orgs(client)
+        self.pipelines = Pipelines(client)
+        self.workflows = Workflows(client)
+        self.workspaces = Workspaces(client)
