@@ -6,8 +6,8 @@ from typing import List, Union
 from nf_tower_sdk.exceptions import NextflowTowerClientError
 from nf_tower_sdk.nft.api_library import AuthenticatedClient
 from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnvResponseDto,
     CreateComputeEnvRequest,
-    DescribeComputeEnvResponse,
     Launch,
     WorkflowLaunchResponse,
 )
@@ -78,7 +78,7 @@ class ComputeEnvsClientInterface(ABC):
     @abstractmethod
     def get_compute_env_details(
         self, workspace_id: int, compute_env_id: str
-    ) -> Union[DescribeComputeEnvResponse, NextflowTowerClientError]:
+    ) -> Union[ComputeEnvResponseDto, NextflowTowerClientError]:
         """
         Describe a Tower compute environment.
 

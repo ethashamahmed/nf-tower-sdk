@@ -5,11 +5,15 @@ from typing import List, Union
 from nf_tower_sdk.clients.client import AuthenticatedTowerClient
 from nf_tower_sdk.exceptions import NextflowTowerClientError
 from nf_tower_sdk.interfaces import ComputeEnvsClientInterface
-from nf_tower_sdk.nft.api_library.api.default import list_compute_envs
+from nf_tower_sdk.nft.api_library.api.default import (
+    describe_compute_env,
+    list_compute_envs,
+)
 from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnvResponseDto,
     CreateComputeEnvRequest,
-    DescribeComputeEnvResponse,
     ListComputeEnvsResponse,
+    ListComputeEnvsResponseEntry,
 )
 
 
@@ -28,30 +32,46 @@ class ComputeEnvs(ComputeEnvsClientInterface, AuthenticatedTowerClient):
 
     def get_compute_envs(
         self, workspace_id: int, status: str = None
-    ) -> Union[List, NextflowTowerClientError]:
-        raise NotImplementedError()
+    ) -> Union[
+        List[ListComputeEnvsResponseEntry], NextflowTowerClientError
+    ]:
+        response: ListComputeEnvsResponse = self._handle_api_response(
+            list_compute_envs.sync(
+                client=self._client,
+                workspace_id=workspace_id,
+                status=status,
+            )
+        )
+        return response.compute_envs
 
     def get_compute_env_id(
         self, workspace_id: int, compute_env_name: str
     ) -> Union[str, NextflowTowerClientError]:
-        compute_envs = list_compute_envs.sync(
-            client=self._client,
-            workspace_id=workspace_id,
-            status="AVAILABLE",
+        response: ListComputeEnvsResponse = self._handle_api_response(
+            list_compute_envs.sync(
+                client=self._client,
+                workspace_id=workspace_id,
+                status="AVAILABLE",
+            )
         )
-        if isinstance(compute_envs, ListComputeEnvsResponse):
-            for compute_env in compute_envs.compute_envs:
-                if compute_env.name.lower() == compute_env_name.lower():
-                    return str(compute_env.id)
-
+        for compute_env in response.compute_envs:
+            if compute_env.name.lower() == compute_env_name.lower():
+                return str(compute_env.id)
         raise NextflowTowerClientError(
-            f"Failed to find compute env: {compute_env_name}. Response from tower: {compute_envs}"
+            f"Failed to find compute env with name {compute_env_name}."
         )
 
     def get_compute_env_details(
         self, workspace_id: int, compute_env_id: str
-    ) -> Union[DescribeComputeEnvResponse, NextflowTowerClientError]:
-        raise NotImplementedError()
+    ) -> Union[ComputeEnvResponseDto, NextflowTowerClientError]:
+        response: ComputeEnvResponseDto = self._handle_api_response(
+            describe_compute_env.sync(
+                client=self._client,
+                workspace_id=workspace_id,
+                compute_env_id=compute_env_id,
+            )
+        )
+        return response.compute_env
 
     def set_primary_compute_env(
         self, workspace_id: int, compute_env_id: str

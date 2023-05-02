@@ -1,9 +1,15 @@
 """Unit tests for ComputeEnvs."""
 
+from typing import List
+
 import pytest
 
 from nf_tower_sdk.clients import ComputeEnvs
-from nf_tower_sdk.nft.api_library.models import CreateComputeEnvRequest
+from nf_tower_sdk.exceptions import NextflowTowerClientError
+from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnvResponseDto,
+    CreateComputeEnvRequest,
+)
 
 
 def test_client_can_create_compute_env(
@@ -39,8 +45,23 @@ def test_client_can_get_compute_envs(
     """
     Tests if client can get compute envs from Tower.
     """
-    with pytest.raises(NotImplementedError):
-        compute_env_client.get_compute_envs(test_workspace["id"])
+    compute_envs = compute_env_client.get_compute_envs(
+        test_workspace["id"]
+    )
+    assert isinstance(compute_envs, List)
+
+
+def test_get_compute_envs_raises_error_for_bad_request(
+    compute_env_client: ComputeEnvs,
+    test_workspace: dict,
+):
+    """
+    Tests if client raises error when get_compute_envs fails.
+    """
+    with pytest.raises(NextflowTowerClientError):
+        compute_env_client.get_compute_envs(
+            test_workspace["id"], status="Created"
+        )
 
 
 def test_client_can_get_compute_env_details(
@@ -51,9 +72,22 @@ def test_client_can_get_compute_env_details(
     """
     Tests if client can get details of compute env from Tower.
     """
-    with pytest.raises(NotImplementedError):
+    details = compute_env_client.get_compute_env_details(
+        test_workspace["id"], test_compute_env["id"]
+    )
+    assert isinstance(details, ComputeEnvResponseDto)
+
+
+def test_get_compute_env_details_raises_error_for_bad_request(
+    compute_env_client: ComputeEnvs,
+    test_workspace: dict,
+):
+    """
+    Tests if client can get details of compute env from Tower.
+    """
+    with pytest.raises(NextflowTowerClientError):
         compute_env_client.get_compute_env_details(
-            test_workspace["id"], test_compute_env["id"]
+            test_workspace["id"], 1
         )
 
 
@@ -70,6 +104,19 @@ def test_client_can_get_compute_env_id(
         test_workspace["id"], test_compute_env["name"]
     )
     assert isinstance(compute_env_id, str) is True
+
+
+def test_get_compute_env_id_raises_error_for_bad_request(
+    compute_env_client: ComputeEnvs,
+    test_workspace: dict,
+):
+    """
+    Tests if client raises error when get_compute_env_id fails.
+    """
+    with pytest.raises(NextflowTowerClientError):
+        compute_env_client.get_compute_env_id(
+            test_workspace["id"], "non-existant-compute"
+        )
 
 
 def test_client_can_set_compute_env(
