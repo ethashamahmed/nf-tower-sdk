@@ -1,3 +1,1 @@
-"""
-SDK for programmatically accessing Nextflow Tower API.
-"""
+"""SDK for programmatically accessing Nextflow Tower API."""

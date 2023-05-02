@@ -5,7 +5,7 @@
 [![PythonSupport](https://img.shields.io/static/v1?label=python&message=%203.9&color=blue?style=flat-square&logo=python)](https://www.python.org/downloads/release/python-390/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Code linter: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
-[![security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 
 Python SDK for [Nextflow Tower API](https://help.tower.nf/22.3/api/overview/#programmatic-api). The purpose of this SDK is to provide programmatic access to Tower API endpoints.
 
@@ -29,3 +29,13 @@ So running tests locally requires this environment variable:
 `NFT_API_TOKEN=<your_api_token_for_nextflow_tower>`.
 See [NF Tower docs](https://help.tower.nf/22.4/api/overview/#authentication)
 for how to create your API token.
+
+Example commands for initialising local environment and running tests:
+
+```bash
+export NFT_API_TOKEN=<your_api_token_for_nextflow_tower>
+make init
+make test
+```
+
+Use [act](https://github.com/nektos/act) to run the Github Actions locally.
