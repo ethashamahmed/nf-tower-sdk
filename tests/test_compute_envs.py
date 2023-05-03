@@ -72,7 +72,7 @@ def test_client_can_delete_compute_env(
     test_compute_env: dict,
 ):
     """
-    Tests if client can create compute env in Tower.
+    Tests if client can delete compute env in Tower.
     """
     is_deleted = compute_env_client.delete_compute_env(
         test_compute_env["id"]
@@ -136,7 +136,7 @@ def test_get_compute_env_details_raises_error_for_bad_request(
     test_workspace: dict,
 ):
     """
-    Tests if client can get details of compute env from Tower.
+    Tests if client raises error when get_compute_env_details fails.
     """
     with pytest.raises(NextflowTowerClientError):
         compute_env_client.get_compute_env_details(

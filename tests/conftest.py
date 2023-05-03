@@ -24,7 +24,7 @@ def tower_client() -> NextflowTowerClient:
 
 @pytest.fixture
 def test_client() -> AuthenticatedClient:
-    "Nextflow Tower client for testing."
+    "AuthenticatedClient object for testing."
     return AuthenticatedClient(
         base_url="https://tower.nf/api",
         token=os.getenv("NFT_API_TOKEN"),
