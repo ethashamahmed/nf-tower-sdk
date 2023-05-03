@@ -42,7 +42,8 @@ def test_client_can_get_compute_env_id(
     based on name.
     """
     compute_env_id = tower_client.compute_envs.get_compute_env_id(
-        test_workspace["id"], test_compute_env["name"]
+        workspace_id=test_workspace["id"],
+        compute_env_name=test_compute_env["name"],
     )
     assert isinstance(compute_env_id, str) is True
 

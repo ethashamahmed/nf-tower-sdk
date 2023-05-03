@@ -5,6 +5,11 @@ import os
 import pytest
 
 from nf_tower_sdk.clients import AuthenticatedClient, ComputeEnvs
+from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnv,
+    CreateComputeEnvRequest,
+    IBMLSFConfiguration,
+)
 from nf_tower_sdk.tower import NextflowTowerClient
 
 
@@ -37,6 +42,16 @@ def compute_env_client(test_client: AuthenticatedClient) -> ComputeEnvs:
 def test_compute_env() -> dict:
     "Compute env details for testing."
     return {"name": "AWS_Batch_Ireland", "id": "2DViEIDMdMDXE0B2VTpsa0"}
+
+
+@pytest.fixture
+def compute_env_request() -> CreateComputeEnvRequest:
+    "Compute env request object for testing."
+    return CreateComputeEnvRequest(
+        compute_env=ComputeEnv(
+            name="Test", config=IBMLSFConfiguration()
+        )
+    )
 
 
 @pytest.fixture

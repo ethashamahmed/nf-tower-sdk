@@ -25,7 +25,9 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def create_compute_env(
-        self, workspace_id: int, compute_env: CreateComputeEnvRequest
+        self,
+        compute_env: CreateComputeEnvRequest,
+        workspace_id: int = None,
     ) -> Union[str, NextflowTowerClientError]:
         """
         Create a new Tower compute environment.
@@ -38,7 +40,9 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def delete_compute_env(
-        self, workspace_id: int, compute_env_id: str
+        self,
+        compute_env_id: str,
+        workspace_id: int = None,
     ) -> Union[bool, NextflowTowerClientError]:
         """
         Delete an existing Tower compute environment.
@@ -51,7 +55,7 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def get_compute_envs(
-        self, workspace_id: int, status: str = None
+        self, workspace_id: int = None, status: str = None
     ) -> Union[List, NextflowTowerClientError]:
         """
         List all Tower compute environments for the authenticated user or given workspace.
@@ -64,7 +68,7 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def get_compute_env_id(
-        self, workspace_id: int, compute_env_name: str
+        self, compute_env_name: str, workspace_id: int = None
     ) -> Union[str, NextflowTowerClientError]:
         """
         Return compute env ID using compute env name. Exact name must be given.
@@ -77,7 +81,7 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def get_compute_env_details(
-        self, workspace_id: int, compute_env_id: str
+        self, compute_env_id: str, workspace_id: int = None
     ) -> Union[ComputeEnvResponseDto, NextflowTowerClientError]:
         """
         Describe a Tower compute environment.
@@ -90,7 +94,7 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def set_primary_compute_env(
-        self, workspace_id: int, compute_env_id: str
+        self, compute_env_id: str, workspace_id: int = None
     ) -> Union[bool, NextflowTowerClientError]:
         """
         Defines the primary Tower compute environment.
@@ -103,7 +107,7 @@ class ComputeEnvsClientInterface(ABC):
 
     @abstractmethod
     def validate_compute_env_name(
-        self, workspace_id: int, name: str
+        self, name: str, workspace_id: int = None
     ) -> Union[bool, NextflowTowerClientError]:
         """
         Check that is a valid compute env name.

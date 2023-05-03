@@ -26,7 +26,7 @@ class AuthenticatedTowerClient(AuthenticatedTowerClientInterface):
         self, response: Response
     ) -> Union[Response, NextflowTowerClientError]:
         """
-        Checking if API returned error response.
+        Checks if API returned error response.
 
         :param response: `Response` object from Tower API.
         """
