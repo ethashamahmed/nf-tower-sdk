@@ -30,16 +30,16 @@ class AuthenticatedTowerClient(AuthenticatedTowerClientInterface):
 
         :param response: `Response` object from Tower API.
         """
-        if response.status_code is HTTPStatus.BAD_REQUEST:
-            raise NextflowTowerClientError(
-                response.content,
-            )
-        if response.status_code is HTTPStatus.CONFLICT:
-            raise NextflowTowerClientError(
-                response.content,
-            )
-        if response.status_code is HTTPStatus.FORBIDDEN:
-            raise NextflowTowerClientError("Operation not allowed.")
+        if isinstance(response, Response):
+            if response.status_code in [
+                HTTPStatus.BAD_REQUEST,
+                HTTPStatus.CONFLICT,
+            ]:
+                raise NextflowTowerClientError(
+                    response.content,
+                )
+            if response.status_code is HTTPStatus.FORBIDDEN:
+                raise NextflowTowerClientError("Operation not allowed.")
         if isinstance(response, ErrorResponse):
             raise NextflowTowerClientError(
                 response.content,
