@@ -1,11 +1,13 @@
 """Interfaces for Nextflow Tower clients."""
 
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import List, Union
 
 from nf_tower_sdk.exceptions import NextflowTowerClientError
 from nf_tower_sdk.nft.api_library import AuthenticatedClient
 from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnvResponseDto,
+    CreateComputeEnvRequest,
     Launch,
     WorkflowLaunchResponse,
 )
@@ -22,8 +24,51 @@ class ComputeEnvsClientInterface(ABC):
     """Interface for compute environments client."""
 
     @abstractmethod
+    def create_compute_env(
+        self,
+        compute_env: CreateComputeEnvRequest,
+        workspace_id: int = None,
+    ) -> Union[str, NextflowTowerClientError]:
+        """
+        Create a new Tower compute environment.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param compute_env: Configuration for compute env to create.
+
+        :return: Compute environment ID.
+        """
+
+    @abstractmethod
+    def delete_compute_env(
+        self,
+        compute_env_id: str,
+        workspace_id: int = None,
+    ) -> Union[bool, NextflowTowerClientError]:
+        """
+        Delete an existing Tower compute environment.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param compute_env_id: ID of compute environment in Tower.
+
+        :return: True if compute env is successfully deleted.
+        """
+
+    @abstractmethod
+    def get_compute_envs(
+        self, workspace_id: int = None, status: str = None
+    ) -> Union[List, NextflowTowerClientError]:
+        """
+        List all Tower compute environments for the authenticated user or given workspace.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param status: Compute env status. Allowed: `CREATING┃AVAILABLE┃ERRORED┃INVALID`.
+
+        :return: List of compute environments.
+        """
+
+    @abstractmethod
     def get_compute_env_id(
-        self, workspace_id: int, compute_env_name: str
+        self, compute_env_name: str, workspace_id: int = None
     ) -> Union[str, NextflowTowerClientError]:
         """
         Return compute env ID using compute env name. Exact name must be given.
@@ -32,6 +77,45 @@ class ComputeEnvsClientInterface(ABC):
         :param compute_env_name: Exact name of compute environment in Tower.
 
         :return: Compute environment ID.
+        """
+
+    @abstractmethod
+    def get_compute_env_details(
+        self, compute_env_id: str, workspace_id: int = None
+    ) -> Union[ComputeEnvResponseDto, NextflowTowerClientError]:
+        """
+        Describe a Tower compute environment.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param compute_env_id: ID of compute environment in Tower.
+
+        :return: Details of the compute environment in Tower.
+        """
+
+    @abstractmethod
+    def set_primary_compute_env(
+        self, compute_env_id: str, workspace_id: int = None
+    ) -> Union[bool, NextflowTowerClientError]:
+        """
+        Defines the primary Tower compute environment.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param compute_env_id: ID of compute environment in Tower.
+
+        :return: True if compute env is successfully set.
+        """
+
+    @abstractmethod
+    def validate_compute_env_name(
+        self, name: str, workspace_id: int = None
+    ) -> Union[bool, NextflowTowerClientError]:
+        """
+        Check that is a valid compute env name.
+
+        :param workspace_id: ID of Workspace containing the compute env.
+        :param name: Name to validate.
+
+        :return: True if name is valid.
         """
 
 

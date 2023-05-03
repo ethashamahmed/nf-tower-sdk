@@ -4,15 +4,53 @@ import os
 
 import pytest
 
+from nf_tower_sdk.clients import AuthenticatedClient, ComputeEnvs
+from nf_tower_sdk.nft.api_library.models import (
+    ComputeEnv,
+    CreateComputeEnvRequest,
+    IBMLSFConfiguration,
+)
 from nf_tower_sdk.tower import NextflowTowerClient
 
 
 @pytest.fixture
-def test_client() -> NextflowTowerClient:
-    "Test client."
+def tower_client() -> NextflowTowerClient:
+    "Nextflow Tower client for testing."
     return NextflowTowerClient(
         url="https://tower.nf",
         api_token=os.getenv("NFT_API_TOKEN"),
+    )
+
+
+@pytest.fixture
+def test_client() -> AuthenticatedClient:
+    "AuthenticatedClient object for testing."
+    return AuthenticatedClient(
+        base_url="https://tower.nf/api",
+        token=os.getenv("NFT_API_TOKEN"),
+    )
+
+
+# pylint: disable=redefined-outer-name
+@pytest.fixture
+def compute_env_client(test_client: AuthenticatedClient) -> ComputeEnvs:
+    "ComputeEnvs client for testing."
+    return ComputeEnvs(test_client)
+
+
+@pytest.fixture
+def test_compute_env() -> dict:
+    "Compute env details for testing."
+    return {"name": "AWS_Batch_Ireland", "id": "2DViEIDMdMDXE0B2VTpsa0"}
+
+
+@pytest.fixture
+def compute_env_request() -> CreateComputeEnvRequest:
+    "Compute env request object for testing."
+    return CreateComputeEnvRequest(
+        compute_env=ComputeEnv(
+            name="Test", config=IBMLSFConfiguration()
+        )
     )
 
 
