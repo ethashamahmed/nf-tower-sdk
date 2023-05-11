@@ -8,7 +8,14 @@ from nf_tower_sdk.nft.api_library import AuthenticatedClient
 from nf_tower_sdk.nft.api_library.models import (
     ComputeEnvResponseDto,
     CreateComputeEnvRequest,
+    DescribeOrganizationResponse,
+    DescribePipelineInfoResponse,
     Launch,
+    ListMembersResponse,
+    ListOrganizationsResponse,
+    ListPipelinesResponse,
+    ListTeamResponse,
+    ListWorkspacesResponse,
     WorkflowLaunchResponse,
 )
 
@@ -122,6 +129,33 @@ class ComputeEnvsClientInterface(ABC):
 class OrgsClientInterface(ABC):
     """Interface for organisation client."""
 
+    def get_collaborators(
+        self, org_id: int
+    ) -> Union[ListMembersResponse, NextflowTowerClientError]:
+        """
+        List all collaborators of an organization.
+
+        :param org_id: Organization numeric identifier
+        """
+
+    def get_members(
+        self, org_id: int
+    ) -> Union[ListMembersResponse, NextflowTowerClientError]:
+        """
+        List all members of an organization.
+
+        :param org_id: Organization numeric identifier
+        """
+
+    def get_orgs(
+        self, role: str = None
+    ) -> Union[ListOrganizationsResponse, NextflowTowerClientError]:
+        """
+        List available organizations.
+
+        :param role: Organization user role identifier
+        """
+
     @abstractmethod
     def get_org_id(
         self, org_name: str
@@ -130,6 +164,73 @@ class OrgsClientInterface(ABC):
         Return organisation ID based on name.
 
         :param org_name: Name of organisation
+        """
+
+    def get_org_details(
+        self, org_id: int
+    ) -> Union[DescribeOrganizationResponse, NextflowTowerClientError]:
+        """
+        Describe organization details.
+
+        :param org_id: Organization numeric identifier
+        """
+
+    def get_teams(
+        self, org_id: int
+    ) -> Union[ListTeamResponse, NextflowTowerClientError]:
+        """
+        List all the teams of a given organization.
+
+        :param org_id: Organization numeric identifier
+        """
+
+    def get_team_details(
+        self, org_id: int, team_id: int
+    ) -> Union[ListTeamResponse, NextflowTowerClientError]:
+        """
+        Describe team details.
+
+        :param org_id: Organization numeric identifier
+        :param team_id: Team numeric identifier
+        """
+
+    def get_team_members(
+        self, org_id: int, team_id: int
+    ) -> Union[ListMembersResponse, NextflowTowerClientError]:
+        """
+        List all the members of a team.
+
+        :param org_id: Organization numeric identifier
+        :param team_id: Team numeric identifier
+        """
+
+    def get_team_workspaces(
+        self, org_id: int, team_id: int
+    ) -> Union[ListWorkspacesResponse, NextflowTowerClientError]:
+        """
+        List all the workspaces a team participates to.
+
+        :param org_id: Organization numeric identifier
+        :param team_id: Team numeric identifier
+        """
+
+    def validate_org_name(
+        self, org_name: str
+    ) -> Union[bool, NextflowTowerClientError]:
+        """
+        Check that is a valid organization name.
+
+        :param org_name: Name of organisation to validate
+        """
+
+    def validate_team_name(
+        self, org_id: int, name: str
+    ) -> Union[bool, NextflowTowerClientError]:
+        """
+        Check that is a valid team name.
+
+        :param org_id: Organization numeric identifier
+        :param name: Organization name to validate
         """
 
 
@@ -150,6 +251,35 @@ class PipelinesClientInterface(ABC):
         :param params: Dictionary containing pipeline parameters
 
         :return: True if parameters are valid.
+        """
+
+    def get_pipelines(
+        self, workspace_id: int = None
+    ) -> Union[ListPipelinesResponse, NextflowTowerClientError]:
+        """
+        List all the Pipelines of a workspace.
+
+        :param workspace_id: ID of Workspace containing the pipeline.
+        """
+
+    def get_pipeline_details(
+        self, name: str, revision: str, workspace_id: int = None
+    ) -> Union[DescribePipelineInfoResponse, NextflowTowerClientError]:
+        """
+        Describe the Pipeline entity for the given id.
+
+        :param name: Pipeline name.
+        :param revision: Pipeline revision.
+        :param workspace_id: ID of Workspace containing the pipeline.
+        """
+
+    def get_pipeline_repositories(
+        self, workspace_id: int = None
+    ) -> Union[ListPipelinesResponse, NextflowTowerClientError]:
+        """
+        List Pipelines accessible to the authenticated user.
+
+        :param workspace_id: ID of Workspace containing the pipeline.
         """
 
     @abstractmethod
