@@ -17,7 +17,7 @@ from nf_tower_sdk.tower import NextflowTowerClient
 def tower_client() -> NextflowTowerClient:
     "Nextflow Tower client for testing."
     return NextflowTowerClient(
-        url="https://tower.nf",
+        url="https://api.tower.nf",
         api_token=os.getenv("NFT_API_TOKEN"),
     )
 
@@ -26,7 +26,7 @@ def tower_client() -> NextflowTowerClient:
 def test_client() -> AuthenticatedClient:
     "AuthenticatedClient object for testing."
     return AuthenticatedClient(
-        base_url="https://tower.nf/api",
+        base_url="https://api.tower.nf",
         token=os.getenv("NFT_API_TOKEN"),
     )
 
@@ -41,7 +41,10 @@ def compute_env_client(test_client: AuthenticatedClient) -> ComputeEnvs:
 @pytest.fixture
 def test_compute_env() -> dict:
     "Compute env details for testing."
-    return {"name": "AWS_Batch_Ireland", "id": "2DViEIDMdMDXE0B2VTpsa0"}
+    return {
+        "name": "AWS_Batch_Ireland_FusionV2_NVMe",
+        "id": "2DViEIDMdMDXE0B2VTpsa0",
+    }
 
 
 @pytest.fixture
@@ -71,7 +74,7 @@ def test_workflow() -> dict:
     "Details of workflow to use for testing."
     return {
         "name": "nf-core-rnaseq",
-        "pipeline_id": 175099328146358,
+        "pipeline_id": 189046775836482,
         "workflow_id": "2ZTGegpXyjPF3U",
         # pylint: disable=line-too-long
         "params": {
