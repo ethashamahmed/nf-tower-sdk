@@ -34,14 +34,14 @@ class NextflowTowerClient(NextflowTowerClientInterface):
         """
         Client which has been authenticated for Nextflow Tower API.
 
-        :param url: URL for Nextflow tower. Example "https://tower.nf".
+        :param url: URL for Nextflow tower. Example "https://api.tower.nf".
         :param api_token: Tower API authentication token.
         :param timeout: The maximum amount of a time in seconds a request can take.
              API functions will raise httpx.TimeoutException if this is exceeded.
         """
         self._url = url
         client = AuthenticatedClient(
-            base_url=f"{url}/api", token=api_token, timeout=timeout
+            base_url=url, token=api_token, timeout=timeout
         )
         self.compute_envs = ComputeEnvs(client)
         self.orgs = Orgs(client)
